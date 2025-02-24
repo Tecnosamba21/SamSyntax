@@ -1,0 +1,54 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-size: x-large;
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 5%;
+    background-color: black;
+}
+
+br {
+    cursor: text;
+}
+
+label {
+    cursor: text;
+    color: white;
+    text-shadow: #fff 1px 0 20px;
+    transition: text-shadow .35s;
+    transition: color .15s;
+    font-family: 'Fira Code';
+}
+
+div::after {
+    content: '_';
+    color: white;
+    font-size: thin;
+}
+
+
+/** ESPECIAL CLASSES FOR CODE HIGHLIGHTING */
+
+.keyword {
+    color: rgb(164, 88, 164);
+    text-shadow: rgb(188, 119, 188) 1px 0 20px;
+}
+
+.const {
+    color: rgb(204, 211, 151);
+    text-shadow: rgb(235, 239, 206) 1px 0 20px;
+}
+
+.number {
+    color: rgb(211, 151, 151);
+    text-shadow: rgb(239, 218, 206) 1px 0 20px;
+}
+
+.string {
+    color: rgb(88, 164, 125);
+    text-shadow: rgb(119, 188, 158) 1px 0 20px;
+}
