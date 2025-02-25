@@ -4,15 +4,88 @@ const keywords = ["break", "case", "catch", "class", "const", "continue", "debug
   "switch", "this", "throw", "true", "try", "typeof", "var", "void", "while", "with",
   "yield", "let", "static", "implements", "interface", "package", "private", "protected",
   "public", "await", "as", "from", "of"]
-const constants = []
+const constants = [
+    "Object",
+    "Array",
+    "Function",
+    "String",
+    "Number",
+    "Boolean",
+    "Symbol",
+    "BigInt",
+    "Map",
+    "Set",
+    "WeakMap",
+    "WeakSet",
+    "Date",
+    "RegExp",
+    "Error",
+    "EvalError",
+    "RangeError",
+    "ReferenceError",
+    "SyntaxError",
+    "TypeError",
+    "URIError",
+    "Promise",
+    "Proxy",
+    "Reflect",
+    "JSON",
+    "Math",
+    "Intl",
+    "console",
+    "document",
+    "window",
+    "localStorage",
+    "sessionStorage",
+    "navigator",
+    "history",
+    "location",
+    "fetch",
+    "XMLHttpRequest",
+    "WebSocket",
+    "Event",
+    "CustomEvent",
+    "MouseEvent",
+    "KeyboardEvent",
+    "File",
+    "Blob",
+    "FormData",
+    "Headers",
+    "Request",
+    "Response",
+    "performance",
+    "Worker",
+    "URL",
+    "URLSearchParams"]
 const numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']
+const special_characters = ["(", ")", "{", "}", "[", "]", "<", ">", "()", "{}", "[]", "<>", "=>"]
 const div = document.getElementById('write')
 let spaces = 0
 
 div.appendChild(document.createElement('label'))
 
 document.addEventListener('keydown', e => {
-    if (numbers.includes(e.key)) {
+    if (e.key === ',') {
+        const character = document.createElement('label')
+        character.textContent = e.key
+        div.appendChild(document.createElement('label'))
+        div.appendChild(character)
+        div.appendChild(document.createElement('label'))
+        div.appendChild(document.createElement('label'))
+    } else if (special_characters.includes(e.key)) {
+        if (e.key === '(') {
+            div.children[div.children.length -1].classList.add('function')
+        }
+        const character = document.createElement('label')
+        character.textContent = e.key
+        if (div.children[div.children.length -1].textContent !== '=' && div.children[div.children.length -1].textContent !== '-') {
+            character.classList.add('special-character')
+        }
+        div.appendChild(document.createElement('label'))
+        div.appendChild(character)
+        div.appendChild(document.createElement('label'))
+        div.appendChild(document.createElement('label'))
+    } else if (numbers.includes(e.key)) {
         div.children[div.children.length -1].textContent = div.children[div.children.length -1].textContent + e.key
         const number_array = div.children[div.children.length -1].textContent.split('')
         let number = true
@@ -50,7 +123,7 @@ document.addEventListener('keydown', e => {
             div.appendChild(document.createElement('label'))
             div.appendChild(document.createElement('label'))
         }
-    } else if (e.key === '.') {
+    } else if (e.key === '.' && !div.children[div.children.length -1].textContent.split('').includes("'") && !div.children[div.children.length -1].textContent.split('').includes('"')) {
         const dot = document.createElement('label')
         dot.textContent = '.'
         div.appendChild(dot)
@@ -80,12 +153,20 @@ document.addEventListener('keydown', e => {
             if (div.children[div.children.length -3].textContent === 'const') {
                 div.children[div.children.length -1].classList.add('const')
             }
-        } catch(err) {
-            console.error(err)
+        } catch {}
+        if (special_characters.includes(div.children[div.children.length -1].textContent)) {
+            div.children[div.children.length -1].classList.add('special-character')
         }
     }
     else if (e.key === 'Backspace') {
-        if (div.children[div.children.length -1].textContent.length >= 1) {
+        if (div.children[div.children.length -3] != null && special_characters.includes(div.children[div.children.length -3].textContent)) {
+            console.log('He llegado!')
+            if (div.children[div.children.length -3].textContent === '(') {
+                div.children[div.children.length -5].classList.remove('function')
+            }
+            div.children[div.children.length -1].remove()
+            div.children[div.children.length -2].remove()
+        } else if (div.children[div.children.length -1].textContent.length >= 1 ) {
             const text_array = div.children[div.children.length -1].textContent.split('')
             text_array.splice(text_array.length -1, 1)
             let text_array_string = ''
@@ -113,6 +194,11 @@ document.addEventListener('keydown', e => {
                     div.children[div.children.length -1].classList.remove('number')
                 }
             })
+            try {
+                if (div.children[div.children.length -3].textContent === 'const') {
+                    div.children[div.children.length -1].classList.add('const')
+                }
+            } catch {}
         } else {
            if (div.children.length > 1) {
                 div.children[div.children.length -1].remove()
