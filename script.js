@@ -65,6 +65,7 @@ let spaces = 0
 div.appendChild(document.createElement('label'))
 
 document.addEventListener('keydown', e => {
+    console.log(e.key)
     if (e.key === ',') {
         const character = document.createElement('label')
         character.textContent = e.key
@@ -141,7 +142,7 @@ document.addEventListener('keydown', e => {
         }
         if (keywords.includes(div.children[div.children.length -1].textContent)) {
             div.children[div.children.length -1].classList.add('keyword')
-        } else if (constants.includes(div.children[div.children.length -1].textContent)) {
+        } else if (constants.includes(div.children[div.children.length -1].textContent.trim())) {
             div.children[div.children.length -1].classList.add('const')
         } else if (div.children[div.children.length -1].textContent.includes("'") || div.children[div.children.length -1].textContent.includes('"')) {
             div.children[div.children.length -1].classList.add('string')
