@@ -15,7 +15,7 @@ br {
     cursor: text;
 }
 
-label {
+span {
     cursor: text;
     color: white;
     text-shadow: #fff 0 0 20px;

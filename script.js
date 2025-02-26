@@ -59,33 +59,34 @@ const constants = [
     "URLSearchParams"]
 const numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']
 const special_characters = ["(", ")", "{", "}", "[", "]", "<", ">", "()", "{}", "[]", "<>", "=>"]
+const special_characters_tab = ["(", "{", "[", "<"]
 const div = document.getElementById('write')
 let spaces = 0
 
-div.appendChild(document.createElement('label'))
+div.appendChild(document.createElement('span'))
 
 document.addEventListener('keydown', e => {
     console.log(e.key)
     if (e.key === ',') {
-        const character = document.createElement('label')
+        const character = document.createElement('span')
         character.textContent = e.key
-        div.appendChild(document.createElement('label'))
+        div.appendChild(document.createElement('span'))
         div.appendChild(character)
-        div.appendChild(document.createElement('label'))
-        div.appendChild(document.createElement('label'))
+        div.appendChild(document.createElement('span'))
+        div.appendChild(document.createElement('span'))
     } else if (special_characters.includes(e.key)) {
         if (e.key === '(') {
             div.children[div.children.length -1].classList.add('function')
         }
-        const character = document.createElement('label')
+        const character = document.createElement('span')
         character.textContent = e.key
         if (div.children[div.children.length -1].textContent !== '=' && div.children[div.children.length -1].textContent !== '-') {
             character.classList.add('special-character')
         }
-        div.appendChild(document.createElement('label'))
+        div.appendChild(document.createElement('span'))
         div.appendChild(character)
-        div.appendChild(document.createElement('label'))
-        div.appendChild(document.createElement('label'))
+        div.appendChild(document.createElement('span'))
+        div.appendChild(document.createElement('span'))
     } else if (numbers.includes(e.key)) {
         div.children[div.children.length -1].textContent = div.children[div.children.length -1].textContent + e.key
         const number_array = div.children[div.children.length -1].textContent.split('')
@@ -102,33 +103,33 @@ document.addEventListener('keydown', e => {
         })
     } else if (e.key === "'") {
         if (!div.children[div.children.length -1].textContent.includes("'")) {
-            div.appendChild(document.createElement('label'))
-            const string_element = document.createElement('label')
+            div.appendChild(document.createElement('span'))
+            const string_element = document.createElement('span')
             string_element.textContent = "'"
             string_element.classList.add('string')
             div.appendChild(string_element)
         } else {
             div.children[div.children.length -1].textContent = div.children[div.children.length -1].textContent + e.key
-            div.appendChild(document.createElement('label'))
-            div.appendChild(document.createElement('label'))
+            div.appendChild(document.createElement('span'))
+            div.appendChild(document.createElement('span'))
         }
     }else if (e.key === '"') {
         if (!div.children[div.children.length -1].textContent.includes('"')) {
-            div.appendChild(document.createElement('label'))
-            const string_element = document.createElement('label')
+            div.appendChild(document.createElement('span'))
+            const string_element = document.createElement('span')
             string_element.textContent = '"'
             string_element.classList.add('string')
             div.appendChild(string_element)
         } else {
             div.children[div.children.length -1].textContent = div.children[div.children.length -1].textContent + e.key
-            div.appendChild(document.createElement('label'))
-            div.appendChild(document.createElement('label'))
+            div.appendChild(document.createElement('span'))
+            div.appendChild(document.createElement('span'))
         }
     } else if (e.key === '.' && !div.children[div.children.length -1].textContent.split('').includes("'") && !div.children[div.children.length -1].textContent.split('').includes('"')) {
-        const dot = document.createElement('label')
+        const dot = document.createElement('span')
         dot.textContent = '.'
         div.appendChild(dot)
-        div.appendChild(document.createElement('label'))
+        div.appendChild(document.createElement('span'))
     } else if (e.key.length <= 1 && e.key !== ' ') {
         if (spaces > 0) {
             let text_array = ''
@@ -210,24 +211,39 @@ document.addEventListener('keydown', e => {
     else if (e.key === ' ') {
         if (!div.children[div.children.length -1].textContent.includes('"') && !div.children[div.children.length -1].textContent.includes("'")) {
             if (div.children[div.children.length -1].textContent.trim().length > 0) {
-                const space_label = document.createElement('label')
-                space_label.textContent = ' '
-                div.appendChild(space_label)
-                div.appendChild(document.createElement('label'))
+                const space_p = document.createElement('span')
+                space_p.textContent = ' '
+                div.appendChild(space_p)
+                div.appendChild(document.createElement('span'))
             } else {
-                spaces++
+                console.log('Llegué!')
+                div.children[div.children.length -1].innerHTML += '&nbsp;'
             }
-            if (div.children[div.children.length -5].textContent === 'const') {
-                constants.push(div.children[div.children.length -3].textContent)
-            }
+            try {
+                if (div.children[div.children.length -5].textContent === 'const') {
+                    constants.push(div.children[div.children.length -3].textContent)
+                }
+            } catch {}
         } else {
             div.children[div.children.length -1].textContent = div.children[div.children.length -1].textContent + ' '
         }
     } else if (e.key === 'Enter') {
         div.appendChild(document.createElement('br'))
-        div.appendChild(document.createElement('label'))
-        if (div.children[div.children.length -5].textContent === 'const') {
-            constants.push(div.children[div.children.length -3].textContent)
+        div.appendChild(document.createElement('span'))
+        try {
+            if (div.children[div.children.length -5].textContent === 'const') {
+                constants.push(div.children[div.children.length -3].textContent)
+            }
+            if (special_characters_tab.includes(div.children[div.children.length -5].textContent)) {
+                for (i = 0; i < 3; i++) {
+                    div.children[div.children.length -1].innerHTML += '&nbsp;'
+                }
+            }
+        } catch {}
+    } else if (e.key === 'Tab') {
+        e.preventDefault()
+        for (i = 0; i < 3; i++) {
+            div.children[div.children.length -1].innerHTML += '&nbsp;'
         }
     }
 })
