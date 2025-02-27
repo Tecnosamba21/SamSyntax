@@ -65,9 +65,20 @@ let spaces = 0
 
 div.appendChild(document.createElement('span'))
 
+const removeNodes = element => {
+    element.childNodes.forEach(child => {
+        child.remove()
+    })
+}
+
 document.addEventListener('keydown', e => {
-    console.log(e.key)
-    if (e.key === ',') {
+    if (e.ctrlKey && e.altKey && e.key === 'l') {
+        for (i = -4; i <= div.children.length; i++) {
+            removeNodes(div)
+        }
+        div.appendChild(document.createElement('span'))
+    }
+    else if (e.key === ',') {
         const character = document.createElement('span')
         character.textContent = e.key
         div.appendChild(document.createElement('span'))
@@ -76,6 +87,7 @@ document.addEventListener('keydown', e => {
         div.appendChild(document.createElement('span'))
     } else if (special_characters.includes(e.key)) {
         if (e.key === '(') {
+            div.children[div.children.length -1].classList = []
             div.children[div.children.length -1].classList.add('function')
         }
         const character = document.createElement('span')
@@ -89,7 +101,7 @@ document.addEventListener('keydown', e => {
         div.appendChild(document.createElement('span'))
     } else if (numbers.includes(e.key)) {
         div.children[div.children.length -1].textContent = div.children[div.children.length -1].textContent + e.key
-        const number_array = div.children[div.children.length -1].textContent.split('')
+        const number_array = div.children[div.children.length -1].textContent.trim().split('')
         let number = true
         number_array.forEach(a => {
             if (numbers.includes(a)) {
@@ -141,7 +153,7 @@ document.addEventListener('keydown', e => {
         } else {
             div.children[div.children.length -1].textContent = div.children[div.children.length -1].textContent + e.key
         }
-        if (keywords.includes(div.children[div.children.length -1].textContent)) {
+        if (keywords.includes(div.children[div.children.length -1].textContent.trim())) {
             div.children[div.children.length -1].classList.add('keyword')
         } else if (constants.includes(div.children[div.children.length -1].textContent.trim())) {
             div.children[div.children.length -1].classList.add('const')
@@ -152,8 +164,13 @@ document.addEventListener('keydown', e => {
             div.children[div.children.length -1].classList = []
         }
         try {
-            if (div.children[div.children.length -3].textContent === 'const') {
+            if (div.children[div.children.length -3].textContent === 'const' || div.children[div.children.length -3].textContent === 'class') {
                 div.children[div.children.length -1].classList.add('const')
+            }
+        } catch {}
+        try {
+            if (div.children[div.children.length -2].textContent.trim() === '.') {
+                div.children[div.children.length -1].classList.add('property')
             }
         } catch {}
         if (special_characters.includes(div.children[div.children.length -1].textContent)) {
@@ -162,7 +179,6 @@ document.addEventListener('keydown', e => {
     }
     else if (e.key === 'Backspace') {
         if (div.children[div.children.length -3] != null && special_characters.includes(div.children[div.children.length -3].textContent)) {
-            console.log('He llegado!')
             if (div.children[div.children.length -3].textContent === '(') {
                 div.children[div.children.length -5].classList.remove('function')
             }
@@ -216,11 +232,10 @@ document.addEventListener('keydown', e => {
                 div.appendChild(space_p)
                 div.appendChild(document.createElement('span'))
             } else {
-                console.log('Llegué!')
                 div.children[div.children.length -1].innerHTML += '&nbsp;'
             }
             try {
-                if (div.children[div.children.length -5].textContent === 'const') {
+                if (div.children[div.children.length -5].textContent === 'const' || div.children[div.children.length -5].textContent === 'class') {
                     constants.push(div.children[div.children.length -3].textContent)
                 }
             } catch {}
@@ -231,15 +246,22 @@ document.addEventListener('keydown', e => {
         div.appendChild(document.createElement('br'))
         div.appendChild(document.createElement('span'))
         try {
-            if (div.children[div.children.length -5].textContent === 'const') {
+            if (div.children[div.children.length -5].textContent === 'const' || div.children[div.children.length -5].textContent === 'class') {
                 constants.push(div.children[div.children.length -3].textContent)
             }
-            if (special_characters_tab.includes(div.children[div.children.length -5].textContent)) {
+            if (special_characters_tab.includes(div.children[div.children.length -5].textContent.trim())) {
                 for (i = 0; i < 3; i++) {
                     div.children[div.children.length -1].innerHTML += '&nbsp;'
                 }
             }
         } catch {}
+        const no_spaces = div.children[div.children.length -3].textContent.trim().length
+        const spaces = div.children[div.children.length -3].textContent.length
+        if ((spaces - no_spaces) > 0) {
+            for (i = 0; i < (spaces - no_spaces); i++) {
+                div.children[div.children.length -1].innerHTML += '&nbsp;'
+            }
+        }
     } else if (e.key === 'Tab') {
         e.preventDefault()
         for (i = 0; i < 3; i++) {
