@@ -245,26 +245,26 @@ document.addEventListener('keydown', e => {
     } else if (e.key === 'Enter') {
         div.appendChild(document.createElement('br'))
         div.appendChild(document.createElement('span'))
+        const no_spaces = div.children[div.children.length -3].textContent.trim().length
+        const spaces = div.children[div.children.length -3].textContent.length
+        if ((spaces - no_spaces) > 0) {
+            for (let i = 0; i < (spaces - no_spaces); i++) {
+                div.children[div.children.length -1].innerHTML += '&nbsp;'
+            }
+        }
         try {
             if (div.children[div.children.length -5].textContent === 'const' || div.children[div.children.length -5].textContent === 'class') {
                 constants.push(div.children[div.children.length -3].textContent)
             }
             if (special_characters_tab.includes(div.children[div.children.length -5].textContent.trim())) {
-                for (i = 0; i < 3; i++) {
+                for (let i = 0; i < 3; i++) {
                     div.children[div.children.length -1].innerHTML += '&nbsp;'
                 }
             }
         } catch {}
-        const no_spaces = div.children[div.children.length -3].textContent.trim().length
-        const spaces = div.children[div.children.length -3].textContent.length
-        if ((spaces - no_spaces) > 0) {
-            for (i = 0; i < (spaces - no_spaces); i++) {
-                div.children[div.children.length -1].innerHTML += '&nbsp;'
-            }
-        }
     } else if (e.key === 'Tab') {
         e.preventDefault()
-        for (i = 0; i < 3; i++) {
+        for (let i = 0; i < 3; i++) {
             div.children[div.children.length -1].innerHTML += '&nbsp;'
         }
     }
